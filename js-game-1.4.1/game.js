@@ -17,3 +17,9 @@ class Vector {
 		return new Vector(this.x * factor, this.y * factor);
 	}
 }
+
+class Actor {
+	constructor() {
+		
+	}
+}

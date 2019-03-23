@@ -20,6 +20,6 @@ class Vector {
 
 class Actor {
 	constructor() {
-		
+
 	}
 }

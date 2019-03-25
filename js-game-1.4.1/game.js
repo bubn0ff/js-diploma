@@ -129,4 +129,8 @@ class Level {
 			}
 		}
 	}
+
+	isFinished() {
+		return (this.status != null && this.finishDelay < 0);
+	}
 }

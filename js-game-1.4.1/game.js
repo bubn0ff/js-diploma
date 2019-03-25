@@ -20,21 +20,21 @@ class Vector {
 
 class Actor {
 	constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
-		if (!(pos instanceof Vector)){
-			throw new Error('Должно быть определено свойство pos, в котором размещён Vector');
-		}
-		
-		if (!(size instanceof Vector)){
-			throw new Error('Должно быть определено свойство size, в котором размещён Vector');
-		}
-		
-		if (!(speed instanceof Vector)){
-			throw new Error('Должно быть определено свойство speed, в котором размещён Vector');
-		}
-		
 		this.pos = pos;
 		this.size = size;
 		this.speed = speed;
+
+		if (!(pos instanceof Vector)) {
+			throw new Error('Должно быть определено свойство pos, в котором размещён Vector');
+		}
+		
+		if (!(size instanceof Vector)) {
+			throw new Error('Должно быть определено свойство size, в котором размещён Vector');
+		}
+		
+		if (!(speed instanceof Vector)) {
+			throw new Error('Должно быть определено свойство speed, в котором размещён Vector');
+		}
 	}
 
 	act() {}
@@ -60,7 +60,7 @@ class Actor {
 	}
 
 	isIntersect(actor) {
-		if (!(actor instanceof Actor)){
+		if (!(actor instanceof Actor)) {
 			throw new Error('Должно быть определено свойство actor, в котором размещён Actor');
 		}
 
@@ -100,3 +100,4 @@ class Actor {
 		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y);
 	}
 }
+

@@ -101,3 +101,32 @@ class Actor {
 	}
 }
 
+class Level {
+	constructor(grid = [], actors = []) {
+		this.grid = grid;
+		this.actors = actors;
+		this.height = grid.length;
+		this.width = 0;
+		this.status = null;
+		this.finishDelay = 1;
+
+		for(const actor of actors) {
+			if (actor.type === 'player') {
+				this.player = actor;
+				break;
+			}
+		}
+
+		/* The level width is equal to the number of grid cells. If in the rows have a different number of cells, 
+		then the level width is equal to the number of cells in the longest row. */
+		if (grid.length !== 0) {
+			for(const arr of this.grid) {
+				if (typeof arr != 'undefined') {
+					if (this.width < arr.length) {
+						this.width = arr.length;
+					}
+				}
+			}
+		}
+	}
+}

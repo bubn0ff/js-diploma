@@ -133,4 +133,19 @@ class Level {
 	isFinished() {
 		return (this.status != null && this.finishDelay < 0);
 	}
+
+	actorAt(actor) {
+		if(!(actor instanceof Actor)) {
+			throw new Error('Движущийся объект должен иметь тип Actor');
+		}
+		
+		// Returns the object of the playing field, which intersects with the transferred object.
+		for(const act of this.actors) {
+			if (typeof act !='undefined' && actor.isIntersect(act)) {
+				return act;
+			}
+		}
+
+		return undefined;	
+	}
 }

@@ -36,4 +36,67 @@ class Actor {
 		this.size = size;
 		this.speed = speed;
 	}
+
+	act() {}
+
+	get left() {
+		return this.pos.x;
+	}
+
+	get right() {
+		return this.pos.x + this.size.x;
+	}
+
+	get top() {
+		return this.pos.y;
+	}
+
+	get bottom() {
+		return this.pos.y + this.size.y;
+	}
+
+	get type() {
+		return 'actor';
+	}
+
+	isIntersect(actor) {
+		if (!(actor instanceof Actor)){
+			throw new Error('Должно быть определено свойство actor, в котором размещён Actor');
+		}
+
+		// The object doesn't intersect with itself.
+		if (this === actor) {
+			return false;
+		}
+
+		// The object doesn't intersect with an object with adjacent borders.
+		if ((this.pos.x === actor.pos.x + actor.size.x) || (actor.pos.x === this.pos.x + actor.size.x) || 
+		(this.pos.y === actor.pos.y + actor.size.y) || (actor.pos.y === this.pos.y + actor.size.y)) {
+			return false;
+		}
+
+		// The object doesn't intersect with an object located at the same point, but having a vector of negative size.
+		if (actor.size.x < 0 || actor.size.y < 0) {
+			return false;
+		}
+
+		/* The object doesn't intersect with an object located very far away 
+		and  intersects with an object that is fully or partially contained in it. */
+		return (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
+		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
+		 (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
+		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
+		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
+		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
+		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
+		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
+		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
+		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
+		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
+		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y) ||
+		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
+		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
+		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
+		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y);
+	}
 }

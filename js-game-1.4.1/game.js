@@ -83,19 +83,11 @@ class Actor {
 		/* The object doesn't intersect with an object located very far away 
 		and  intersects with an object that is fully or partially contained in it. */
 		return (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
-		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
-		 (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
 		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
-		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
-		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
-		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
-		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
+		 (this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y && 
+		 this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x) || 
 		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
-		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
-		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
-		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y) ||
-		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
-		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
+		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) || 
 		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
 		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y);
 	}
@@ -141,7 +133,7 @@ class Level {
 		
 		// Returns the object of the playing field, which intersects with the transferred object.
 		for(const act of this.actors) {
-			if (typeof act !='undefined' && actor.isIntersect(act)) {
+			if (typeof act != 'undefined' && actor.isIntersect(act)) {
 				return act;
 			}
 		}

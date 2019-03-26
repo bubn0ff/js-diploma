@@ -183,4 +183,33 @@ class Level {
 			this.actors.splice(indexActor, 1);
 		}
 	}
+
+	noMoreActors(type) {
+		if (this.actors) {
+			for(const actor of this.actors) {
+				if (actor.type === type) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	playerTouched(type, actor) {
+		if (this.status != null) {
+			return;
+		}
+		
+		if (type === 'lava' || type === 'fireball') {
+			this.status = 'lost';
+		}
+		
+		if (type === 'coin' && actor.type === 'coin') {
+			this.removeActor(actor);
+			if (this.noMoreActors('coin')) {
+				this.status = 'won';
+			}
+		}
+	}
 }

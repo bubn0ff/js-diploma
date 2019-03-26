@@ -140,4 +140,47 @@ class Level {
 
 		return undefined;	
 	}
+
+	obstacleAt(pos, size) {
+		if(!(pos instanceof Vector)) {
+			throw new Error('Движущийся объект pos должен иметь тип Vector');
+		}
+
+		if(!(size instanceof Vector)) {
+			throw new Error('Движущийся объект size должен иметь тип Vector');
+		}
+
+		const xStart = Math.floor(pos.x);
+		const yStart = Math.floor(pos.y);
+		const xEnd = Math.ceil(pos.x + size.x);
+		const yEnd = Math.ceil(pos.y + size.y);
+
+		// if the left, right and top of the object are outside the level
+		if (xStart < 0 || xEnd > this.width || yStart < 0) {
+			return 'wall';
+		}
+
+		// if the bottom of the object are outside the level
+		if (yEnd > this.height) {
+			return 'lava';
+		}
+
+		/* returns string "wall" if the area intersects with the wall and the object has non-integer coordinates and size
+		   returns string "lava" if the area intersects with the lava */
+		for(let y = yStart; y < yEnd; y++) {
+			for(let x = xStart; x < xEnd; x++) {
+				const obstacle = this.grid[y][x];
+				if (typeof obstacle !== 'undefined') {
+					return obstacle;
+				}
+			}
+		}
+	}
+
+	removeActor(actor) {
+		const indexActor = this.actors.indexOf(actor);
+		if (indexActor != -1) {
+			this.actors.splice(indexActor, 1);
+		}
+	}
 }

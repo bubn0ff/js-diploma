@@ -39,6 +39,8 @@ class Actor {
 
 	act() {}
 
+	
+	// A object boundaries - left, right, top, bottom.
 	get left() {
 		return this.pos.x;
 	}
@@ -70,8 +72,8 @@ class Actor {
 		}
 
 		// The object doesn't intersect with an object with adjacent borders.
-		if ((this.pos.x === actor.pos.x + actor.size.x) || (actor.pos.x === this.pos.x + actor.size.x) || 
-		(this.pos.y === actor.pos.y + actor.size.y) || (actor.pos.y === this.pos.y + actor.size.y)) {
+		if ((this.pos.x === actor.pos.x + actor.size.x) || (actor.pos.x === this.pos.x + this.size.x) || 
+		(this.pos.y === actor.pos.y + actor.size.y) || (actor.pos.y === this.pos.y + this.size.y)) {
 			return false;
 		}
 
@@ -80,16 +82,12 @@ class Actor {
 			return false;
 		}
 
-		/* The object doesn't intersect with an object located very far away 
-		and  intersects with an object that is fully or partially contained in it. */
-		return (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
-		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
-		 (this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y && 
-		 this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x) || 
-		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
-		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) || 
-		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
-		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y);
+		/* The object intersects with an object that is fully or partially contained in it
+		(obviously, that the object doesn't intersect with an object located very far away). */
+		return (this.pos.x <= actor.pos.x && this.pos.x + this.size.x >= actor.pos.x && 
+		 this.pos.y <= actor.pos.y && this.pos.y + this.size.y >= actor.pos.y) || 
+		 (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x + actor.size.x && 
+		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y + actor.size.y);
 	}
 }
 

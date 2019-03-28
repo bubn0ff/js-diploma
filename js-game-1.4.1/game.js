@@ -129,12 +129,10 @@ class Level {
 		
 		// Returns the object of the playing field, which intersects with the transferred object.
 		for(const act of this.actors) {
-			if (typeof act != 'undefined' && actor.isIntersect(act)) {
+			if (actor.isIntersect(act)) {
 				return act;
 			}
 		}
-
-		return undefined;	
 	}
 
 	obstacleAt(pos, size) {

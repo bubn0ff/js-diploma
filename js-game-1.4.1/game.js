@@ -111,10 +111,8 @@ class Level {
 		then the level width is equal to the number of cells in the longest row. */
 		if (grid.length !== 0) {
 			for(const arr of this.grid) {
-				if (typeof arr != 'undefined') {
-					if (this.width < arr.length) {
-						this.width = arr.length;
-					}
+				if (typeof arr != 'undefined' && this.width < arr.length) {
+					this.width = arr.length;
 				}
 			}
 		}

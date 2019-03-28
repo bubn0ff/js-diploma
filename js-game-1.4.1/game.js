@@ -159,8 +159,7 @@ class Level {
 			return 'lava';
 		}
 
-		/* returns string "wall" if the area intersects with the wall and the object has non-integer coordinates and size
-		   returns string "lava" if the area intersects with the lava */
+		// if the area intersects with the wall and the object has non-integer coordinates and size
 		for(let y = yStart; y < yEnd; y++) {
 			for(let x = xStart; x < xEnd; x++) {
 				const obstacle = this.grid[y][x];
@@ -179,22 +178,16 @@ class Level {
 	}
 
 	noMoreActors(type) {
-		if (this.actors) {
-			for(const actor of this.actors) {
-				if (actor.type === type) {
-					return false;
-				}
+		for(const actor of this.actors) {
+			if (actor.type === type) {
+				return false;
 			}
-		}
+		}		
 
 		return true;
 	}
 
-	playerTouched(type, actor) {
-		if (this.status != null) {
-			return;
-		}
-		
+	playerTouched(type, actor) {		
 		if (type === 'lava' || type === 'fireball') {
 			this.status = 'lost';
 		}

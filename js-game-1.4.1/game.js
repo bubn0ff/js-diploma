@@ -200,3 +200,35 @@ class Level {
 		}
 	}
 }
+
+class LevelParser {
+	constructor(dictionary) {
+		this.dictionary = dictionary;
+	}
+
+	actorFromSymbol(symbol) {
+		if (typeof symbol === 'undefined') {
+			return undefined;
+		}
+
+		return this.dictionary[symbol];
+	}
+
+	obstacleFromSymbol(symbol) {
+		const symbols = {
+			'x': 'wall',
+			'!': 'lava'
+		}
+
+		return symbols[symbol];
+	}
+
+	createGrid(strings) {
+		const array = [];
+		let i = 0;
+		
+		// 
+		
+		return array;
+	}
+}

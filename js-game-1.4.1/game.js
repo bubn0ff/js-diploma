@@ -227,7 +227,20 @@ class LevelParser {
 		const array = [];
 		let i = 0;
 		
-		// 
+		for(const string of strings) {
+			array[i] = [];
+			
+			for(let j = 0; j < string.length; j++) {
+				const symbol = string.charAt(j);
+				if (symbol) {
+					array[i].push(this.obstacleFromSymbol(symbol));
+				} else {
+					array[i].push(undefined);
+				}
+			}
+			
+			i++;
+		}
 		
 		return array;
 	}

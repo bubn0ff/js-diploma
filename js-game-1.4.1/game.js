@@ -248,20 +248,22 @@ class LevelParser {
 
 	createActors(strings) {
 		const array = [];
-		let k = 0;
+		let i = 0;
 
-		for(let m = 0; m < strings.length; m++) {
-			const string = strings[m];
+		for(let y = 0; y < strings.length; y++) {
+			const string = strings[y];
 
-			for(let i = 0; i < string.length; i++) {
-				const symbol = string.charAt(i);
-				const actorCtr = this.actorFromSymbol(symbol);
-				if (typeof actorCtr === 'function') {
-					const actor = new actorCtr();
+			for(let x = 0; x < string.length; x++) {
+				const symbol = string.charAt(x);
+				const actorConstructor = this.actorFromSymbol(symbol);
+				
+				if (typeof actorConstructor === 'function') {
+					const actor = new actorConstructor();
+				
 					if (actor instanceof Actor) {
-						array[k] = new actorCtr();
-						array[k].pos = new Vector(i, m);
-						k++;
+						array[i] = new actorConstructor();
+						array[i].pos = new Vector(x, y);
+						i++;
 					}
 				}
 			}

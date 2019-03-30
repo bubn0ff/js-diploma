@@ -10,6 +10,7 @@ class Vector {
 		if(!(vector instanceof Vector)) {
 			throw new Error('Можно прибавлять к вектору только вектор типа Vector');
 		}
+
 		return new Vector(this.x + vector.x, this.y + vector.y);
 	}
 	
@@ -137,11 +138,11 @@ class Level {
 
 	obstacleAt(pos, size) {
 		if(!(pos instanceof Vector)) {
-			throw new Error('Движущийся объект pos должен иметь тип Vector');
+			throw new Error('Объект pos должен иметь тип Vector');
 		}
 
 		if(!(size instanceof Vector)) {
-			throw new Error('Движущийся объект size должен иметь тип Vector');
+			throw new Error('Объект size должен иметь тип Vector');
 		}
 
 		const xStart = Math.floor(pos.x);
@@ -187,7 +188,7 @@ class Level {
 		return true;
 	}
 
-	playerTouched(type, actor) {		
+	playerTouched(type, actor) {
 		if (type === 'lava' || type === 'fireball') {
 			this.status = 'lost';
 		}
@@ -207,7 +208,7 @@ class LevelParser {
 	}
 
 	actorFromSymbol(symbol) {
-		if (typeof symbol === 'undefined') {
+		if (typeof symbol === 'undefined' || typeof this.dictionary === 'undefined') {
 			return undefined;
 		}
 
@@ -243,5 +244,34 @@ class LevelParser {
 		}
 		
 		return array;
+	}
+
+	createActors(strings) {
+		const array = [];
+		let k = 0;
+
+		for(let m = 0; m < strings.length; m++) {
+			const string = strings[m];
+
+			for(let i = 0; i < string.length; i++) {
+				const symbol = string.charAt(i);
+				const actorCtr = this.actorFromSymbol(symbol);
+				if (typeof actorCtr === 'function') {
+					const actor = new actorCtr();
+					if (actor instanceof Actor) {
+						array[k] = new actorCtr();
+						array[k].pos = new Vector(i, m);
+						k++;
+					}
+				}
+			}
+		}
+
+		return array;
+	}
+
+	// returns the playing field filled with obstacles and moving objects
+	parse(strings) {
+		return new Level(this.createGrid(strings), this.createActors(strings));
 	}
 }

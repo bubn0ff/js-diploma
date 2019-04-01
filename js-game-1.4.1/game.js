@@ -26,7 +26,7 @@ class Actor {
 		this.speed = speed;
 
 		if (!(pos instanceof Vector && size instanceof Vector && speed instanceof Vector)) {
-			throw new Error(`Один из переданных свойств - ${pos}, ${size}, ${speed} - не является экземпляром класса Vector`);
+			throw new Error(`Одно из переданных свойств - ${pos}, ${size}, ${speed} - не является экземпляром класса Vector`);
 		}
 	}
 

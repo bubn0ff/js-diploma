@@ -25,16 +25,8 @@ class Actor {
 		this.size = size;
 		this.speed = speed;
 
-		if (!(pos instanceof Vector)) {
-			throw new Error('Должно быть определено свойство pos, в котором размещён Vector');
-		}
-		
-		if (!(size instanceof Vector)) {
-			throw new Error('Должно быть определено свойство size, в котором размещён Vector');
-		}
-		
-		if (!(speed instanceof Vector)) {
-			throw new Error('Должно быть определено свойство speed, в котором размещён Vector');
+		if (!(pos instanceof Vector && size instanceof Vector && speed instanceof Vector)) {
+			throw new Error(`Один из переданных свойств - ${pos}, ${size}, ${speed} - не является экземпляром класса Vector`);
 		}
 	}
 
@@ -64,7 +56,7 @@ class Actor {
 
 	isIntersect(actor) {
 		if (!(actor instanceof Actor)) {
-			throw new Error('Должно быть определено свойство actor, в котором размещён Actor');
+			throw new Error(`Объект ${actor} не передан или не является экземпляром класса Actor`);
 		}
 
 		// The object doesn't intersect with itself.
@@ -120,29 +112,21 @@ class Level {
 	}
 
 	isFinished() {
-		return (this.status != null && this.finishDelay < 0);
+		return this.status != null && this.finishDelay < 0;
 	}
 
 	actorAt(actor) {
 		if(!(actor instanceof Actor)) {
-			throw new Error('Движущийся объект должен иметь тип Actor');
+			throw new Error(`Объект ${actor} не передан или не является экземпляром класса Actor`);
 		}
 		
 		// Returns the object of the playing field, which intersects with the transferred object.
-		for(const act of this.actors) {
-			if (actor.isIntersect(act)) {
-				return act;
-			}
-		}
+		return this.actors.find(el => el.isIntersect(actor));
 	}
 
 	obstacleAt(pos, size) {
-		if(!(pos instanceof Vector)) {
-			throw new Error('Объект pos должен иметь тип Vector');
-		}
-
-		if(!(size instanceof Vector)) {
-			throw new Error('Объект size должен иметь тип Vector');
+		if(!(pos instanceof Vector && size instanceof Vector)) {
+			throw new Error(`Один из аргументов - ${pos}, ${size} - не является экземпляром класса Vector`);
 		}
 
 		const xStart = Math.floor(pos.x);
@@ -208,11 +192,7 @@ class LevelParser {
 	}
 
 	actorFromSymbol(symbol) {
-		if (typeof symbol === 'undefined' || typeof this.dictionary === 'undefined') {
-			return undefined;
-		}
-
-		return this.dictionary[symbol];
+		return (typeof symbol === 'undefined' || typeof this.dictionary === 'undefined') ? undefined : this.dictionary[symbol];
 	}
 
 	obstacleFromSymbol(symbol) {

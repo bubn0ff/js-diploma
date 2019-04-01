@@ -270,4 +270,19 @@ class Fireball extends Actor {
 	getNextPosition(time = 1) {
 		return this.pos.plus(this.speed.times(time));
 	}
+
+	// Handles a fireball strike with an obstacle.
+	handleObstacle() {
+		this.speed = this.speed.times(-1);
+	}
+
+	// Updates the state of a moving fireball.
+	act(time, level) {
+		const nextPosition = this.getNextPosition(time);
+		if (level.obstacleAt(nextPosition, this.size)) {
+			this.handleObstacle();
+		} else {
+			this.pos = nextPosition;
+		}
+	}
 }

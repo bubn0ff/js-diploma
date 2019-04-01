@@ -309,3 +309,16 @@ class FireRain extends Fireball {
 		this.pos = this.initPosition;
 	}
 }
+
+class Coin extends Actor {
+	constructor(pos = new Vector(1, 1)) {
+		super(new Vector(pos.x + 0.2, pos.y + 0.1), new Vector(0.6, 0.6));
+		this.springSpeed = 8;
+		this.springDist = 0.07;
+		this.spring = Math.random() * Math.PI * 2;
+	}
+
+	get type() {
+		return 'coin';
+	}
+}

@@ -321,4 +321,19 @@ class Coin extends Actor {
 	get type() {
 		return 'coin';
 	}
+
+	// Updates the bouncing phase.
+	updateSpring(time = 1) {
+		this.spring += this.springSpeed * time;
+	}
+
+	getSpringVector() {
+		return new Vector(0, Math.sin(this.spring) * this.springDist);
+	}
+
+	getNextPosition(time = 1) {
+		this.updateSpring(time);
+    	const springVector = this.getSpringVector();
+    	return new Vector(this.pos.x, this.pos.y + springVector.y);
+	}
 }

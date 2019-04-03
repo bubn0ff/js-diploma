@@ -313,6 +313,7 @@ class FireRain extends Fireball {
 class Coin extends Actor {
 	constructor(pos = new Vector(1, 1)) {
 		super(new Vector(pos.x + 0.2, pos.y + 0.1), new Vector(0.6, 0.6));
+		this.position = this.pos;
 		this.springSpeed = 8;
 		this.springDist = 0.07;
 		this.spring = Math.random() * Math.PI * 2;
@@ -332,7 +333,6 @@ class Coin extends Actor {
 	}
 
 	getNextPosition(time = 1) {
-		const position = this.pos;
 		this.updateSpring(time);
     	return position.plus(this.getSpringVector());
 	}

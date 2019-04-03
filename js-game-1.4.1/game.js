@@ -278,7 +278,7 @@ class Fireball extends Actor {
 
 	// Updates the state of a moving fireball.
 	act(time, level) {
-		const nextPosition = this.getNextPosition(time);
+    const nextPosition = this.getNextPosition(time);
 		if (level.obstacleAt(nextPosition, this.size)) {
 			this.handleObstacle();
 		} else {
@@ -312,7 +312,7 @@ class FireRain extends Fireball {
 
 class Coin extends Actor {
 	constructor(pos = new Vector(1, 1)) {
-		super(new Vector(pos.x + 0.2, pos.y + 0.1), new Vector(0.6, 0.6));
+		super(pos.plus(new Vector(0.2, 0.1)), new Vector(0.6, 0.6));
 		this.position = this.pos;
 		this.springSpeed = 8;
 		this.springDist = 0.07;
@@ -334,10 +334,85 @@ class Coin extends Actor {
 
 	getNextPosition(time = 1) {
 		this.updateSpring(time);
-    	return position.plus(this.getSpringVector());
+    return this.position.plus(this.getSpringVector());
 	}
 
 	act(time) {
 		this.pos = this.getNextPosition(time);
 	}
 }
+
+class Player extends Actor {
+	constructor(pos = new Vector(0, 0)) {
+		super(new Vector(pos.x + 0, pos.y - 0.5), new Vector(0.8, 1.5));
+	}
+
+	get type() {
+		return 'player';
+	}
+}
+
+const schema = [
+  [
+    '         ',
+    '   |     ',
+    '       o ',
+    '      xxx',
+    '@        ',
+    '         ',
+    'xxx      ',
+    '!!!!!!!!!'
+  ],
+  [
+    '         ',
+    '@        ',
+    '         ',
+    'x    |  o',
+    '    o   x',
+    '   xx    ',
+    '         ',
+    '!!!      '
+  ],
+   [
+    '         ',
+    '  =      ',
+    'o        ',
+    'x        ',
+    '    x   @',
+    'o      xx',
+    'xx|      ',
+    '!!!!!!!!!'
+  ],
+   [
+    '    @    ',
+    '         ',
+    '    xx   ',
+    '=  |   o ',
+    '       xx',
+    'oo       ',
+    'xxx      ',
+    '         '
+  ],
+  [
+    '!!!!!!!!!',
+    '         ',
+    '@        ',
+    'xxx      ',
+    '=  |  |  ',
+    '    o    ',
+    '    x    ',
+    '!!!!!!!!!'
+  ]
+];
+
+const actorDict = {
+  '@': Player,
+  'o': Coin,
+  '|': VerticalFireball,
+  '=': HorizontalFireball,
+  'v': FireRain
+}
+
+const parser = new LevelParser(actorDict);
+runGame(schema, parser, DOMDisplay)
+  .then(() => alert('Ура, Вы выиграли!'));

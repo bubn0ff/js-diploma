@@ -311,9 +311,9 @@ class FireRain extends Fireball {
 }
 
 class Coin extends Actor {
-	constructor(pos = new Vector(1, 1)) {
+	constructor(pos = new Vector(0, 0)) {
 		super(pos.plus(new Vector(0.2, 0.1)), new Vector(0.6, 0.6));
-		this.position = this.pos;
+		// this.position = this.pos; // old version
 		this.springSpeed = 8;
 		this.springDist = 0.07;
 		this.spring = Math.random() * Math.PI * 2;
@@ -334,7 +334,9 @@ class Coin extends Actor {
 
 	getNextPosition(time = 1) {
 		this.updateSpring(time);
-    return this.position.plus(this.getSpringVector());
+    // return this.position.plus(this.getSpringVector()); // old version
+    const springVector = this.getSpringVector();
+    return new Vector(this.pos.x, this.pos.y + springVector.y);
 	}
 
 	act(time) {
@@ -344,7 +346,7 @@ class Coin extends Actor {
 
 class Player extends Actor {
 	constructor(pos = new Vector(0, 0)) {
-		super(new Vector(pos.x + 0, pos.y - 0.5), new Vector(0.8, 1.5));
+		super(pos.plus(new Vector(0, -0.5)), new Vector(0.8, 1.5));
 	}
 
 	get type() {
@@ -374,13 +376,13 @@ const schema = [
     '!!!      '
   ],
    [
+    '   =     ',
     '         ',
-    '  =      ',
-    'o        ',
-    'x        ',
-    '    x   @',
+    '         ',
+    '        @',
+    '    x    ',
     'o      xx',
-    'xx|      ',
+    'xx    |  ',
     '!!!!!!!!!'
   ],
    [
@@ -389,14 +391,14 @@ const schema = [
     '    xx   ',
     '=  |   o ',
     '       xx',
-    'oo       ',
+    'o        ',
     'xxx      ',
     '         '
   ],
   [
     '!!!!!!!!!',
+    ' @       ',
     '         ',
-    '@        ',
     'xxx      ',
     '=  |  |  ',
     '    o    ',

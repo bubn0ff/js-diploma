@@ -335,6 +335,8 @@ class Coin extends Actor {
 	getNextPosition(time = 1) {
 		this.updateSpring(time);
     // return this.position.plus(this.getSpringVector()); // old version
+    
+    // new version of code
     const springVector = this.getSpringVector();
     return new Vector(this.pos.x, this.pos.y + springVector.y);
 	}

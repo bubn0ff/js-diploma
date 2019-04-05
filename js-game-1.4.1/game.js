@@ -77,10 +77,22 @@ class Actor {
 
 		/* The object intersects with an object that is fully or partially contained in it
 		(obviously, that the object doesn't intersect with an object located very far away). */
-		return (this.pos.x <= actor.pos.x && this.pos.x + this.size.x >= actor.pos.x && 
-		 this.pos.y <= actor.pos.y && this.pos.y + this.size.y >= actor.pos.y) || 
-		 (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x + actor.size.x && 
-		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y + actor.size.y);
+		return (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
+		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
+		 (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
+		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
+		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
+		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
+		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
+		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
+		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
+		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
+		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
+		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y) ||
+		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
+		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
+		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
+		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y);
 	}
 }
 
@@ -226,24 +238,24 @@ class LevelParser {
 		return array;
 	}
 
-	createActors(strings) {
-		const array = [];
-		let i = 0;
+	createActors(strings = []) {
+		if (!this.dictionary) {
+      return [];
+    }
 
+		const array = [];
+		
 		for(let y = 0; y < strings.length; y++) {
-			const string = strings[y];
+			const string = strings[y].split('');
 
 			for(let x = 0; x < string.length; x++) {
-				const symbol = string.charAt(x);
-				const actorConstructor = this.actorFromSymbol(symbol);
-				
+				let actorConstructor = this.actorFromSymbol(string[x]);
+
 				if (typeof actorConstructor === 'function') {
-					const actor = new actorConstructor();
-				
+					let actor = new actorConstructor(new Vector(x, y));
+
 					if (actor instanceof Actor) {
-						array[i] = new actorConstructor();
-						array[i].pos = new Vector(x, y);
-						i++;
+						array.push(actor);
 					}
 				}
 			}
@@ -313,7 +325,7 @@ class FireRain extends Fireball {
 class Coin extends Actor {
 	constructor(pos = new Vector(0, 0)) {
 		super(pos.plus(new Vector(0.2, 0.1)), new Vector(0.6, 0.6));
-		// this.position = this.pos; // old version
+		this.position = this.pos;
 		this.springSpeed = 8;
 		this.springDist = 0.07;
 		this.spring = Math.random() * Math.PI * 2;
@@ -334,11 +346,7 @@ class Coin extends Actor {
 
 	getNextPosition(time = 1) {
 		this.updateSpring(time);
-    // return this.position.plus(this.getSpringVector()); // old version
-    
-    // new version of code
-    const springVector = this.getSpringVector();
-    return new Vector(this.pos.x, this.pos.y + springVector.y);
+    return this.position.plus(this.getSpringVector()); 
 	}
 
 	act(time) {
@@ -360,10 +368,10 @@ const schema = [
   [
     '         ',
     '   |     ',
-    '       o ',
+    'o      o ',
     '      xxx',
     '@        ',
-    '         ',
+    '  o      ',
     'xxx      ',
     '!!!!!!!!!'
   ],
@@ -381,26 +389,26 @@ const schema = [
     '   =     ',
     '         ',
     '         ',
-    '        @',
+    '   v    @',
     'o   x    ',
     '       xx',
     'xx    |  ',
     '!!!!!!!!!'
   ],
    [
-    '    @    ',
     '         ',
+    '     @   ',
     '    xx   ',
     '=  |   o ',
     'o      xx',
     '         ',
     'xxx      ',
-    '         '
+    '   !!!!!!'
   ],
   [
-    '!!!!!!!!!',
-    ' @       ',
+    '!!!!  !!!',
     '         ',
+    ' @       ',
     'xxx      ',
     '=  |  |  ',
     '    o    ',

@@ -56,43 +56,15 @@ class Actor {
 
 	isIntersect(actor) {
 		if (!(actor instanceof Actor)) {
-			throw new Error(`Объект ${actor} не передан или не является экземпляром класса Actor`);
+			throw new Error('Можно передавать только объект типа Actor');
 		}
 
-		// The object doesn't intersect with itself.
-		if (this === actor) {
+		if (actor === this || actor.left >= this.right || actor.top >= this.bottom || 
+				actor.right <= this.left || actor.bottom <= this.top) {
 			return false;
 		}
 
-		// The object doesn't intersect with an object with adjacent borders.
-		if ((this.pos.x === actor.pos.x + actor.size.x) || (actor.pos.x === this.pos.x + this.size.x) || 
-		(this.pos.y === actor.pos.y + actor.size.y) || (actor.pos.y === this.pos.y + this.size.y)) {
-			return false;
-		}
-
-		// The object doesn't intersect with an object located at the same point, but having a vector of negative size.
-		if (actor.size.x < 0 || actor.size.y < 0) {
-			return false;
-		}
-
-		/* The object intersects with an object that is fully or partially contained in it
-		(obviously, that the object doesn't intersect with an object located very far away). */
-		return (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
-		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
-		 (this.pos.x <= actor.pos.x + actor.size.x && this.pos.x >= actor.pos.x && 
-		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
-		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
-		 this.pos.y <= actor.pos.y + actor.size.y && this.pos.y >= actor.pos.y) ||
-		 (this.pos.x + this.size.x <= actor.pos.x + actor.size.x && this.pos.x + this.size.x >= actor.pos.x && 
-		 this.pos.y + this.size.y <= actor.pos.y + actor.size.y && this.pos.y + this.size.y >= actor.pos.y) ||
-		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
-		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
-		 (actor.pos.x <= this.pos.x + this.size.x && actor.pos.x >= this.pos.x && 
-		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y) ||
-		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
-		 actor.pos.y <= this.pos.y + this.size.y && actor.pos.y >= this.pos.y) ||
-		 (actor.pos.x + actor.size.x <= this.pos.x + this.size.x && actor.pos.x + actor.size.x >= this.pos.x && 
-		 actor.pos.y + actor.size.y <= this.pos.y + this.size.y && actor.pos.y + actor.size.y >= this.pos.y);
+		return true;
 	}
 }
 

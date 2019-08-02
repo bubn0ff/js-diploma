@@ -1,3 +1,1 @@
-# JS_diploma
-My first graduation project in JavaScript.
-"# diploma_js" 
+# Дипломный проект курса JavaScript
